@@ -1,146 +1,130 @@
 package com.dam2.apli
 
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
+import android.widget.Button
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.res.stringResource
-
-open class UI{
-
-}
-@Composable
-fun nombreFile(nombre: String, modifier: Modifier) {
-    Row {
-        Text(
-            text = "LidierMaximo",
-            modifier = modifier,
-            fontSize = 25.sp,
-            lineHeight = 90.sp,
-            color = Color.Red,
-            textAlign = TextAlign.Center
-        )
-    }
-    /**
-    Row(modifier = Modifier.padding(0.dp, 10.dp)) {
-    Image(
-    painter = painterResource(id = R.drawable.),
-    contentDescription = "icono de android",
-    modifier = Modifier
-    .padding(30.dp, 0.dp)
-    )
-    }
-     */
-}
 
 
-@Composable
-fun fButton(miViewModel: MyViewModel) {
-    Row {
-        Text(
-            text = "Lista: ${miViewModel.getLista()}"
-            //text = "Numeros: ${miViewModel.getNumero()}"
-        )
-    }
-    Row(modifier = Modifier.padding(0.dp, 10.dp)) {
-        Button(
-            onClick = {
-                //miViewModel.crearRandom()
-                miViewModel.crearListaRandom()
-                Log.d("Funciones", "tralala, apretada")
-            },
-            modifier = Modifier
-                .height(100.dp)
-                .width(230.dp)
-                .padding(30.dp, 0.dp),
-            colors = ButtonDefaults.buttonColors(Color.Yellow)
-        ) { // es un metodo que puede recibir el boton, al ser el último lo podemos poner fuera de los paréntesis
-
-            Text(
-                text = "tocame!", textAlign = TextAlign.Center,
-                color = Color.Red
-            )
-        }
-    }
-}
-
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun etiquetaRellenarPalabras(miViewModel: MyViewModel) {
-    Row {
-        // campo de texto para rellenar
-        OutlinedTextField(
-            value = miViewModel.getNombre(),
-            onValueChange = {
-                miViewModel.nombreIdentificador.value = it //variable string
-            },
-            label = {
-                Text(
-                    text = "Introduzca un nombre",
-                    color = Color.Red
-                )
+@Composable
+fun buttons(MyViewModel :MyViewModel){
+    Column {
+        Row {
+            FilledTonalButton(onClick = { MyViewModel.randomLista()}) {
+                Text(text = "Tonal_List")
             }
-        )
-    }
-    Row {
-        if (miViewModel.getNombre().length > 3) {
-            Text(
-                text = "Hola: ${miViewModel.getNombre()}!"
-            )
+            Spacer(modifier = Modifier.height(50.dp)) // Espacio de 50.dp
+
+            //Trabajamos con este boton
+            OutlinedButton(onClick = {MyViewModel.random()}) {
+                Modifier.border(3.dp, Color.Black)//Por ue coño no funciona
+                Text(text = "outlined_Random")
+
+            }
+
+
+            Spacer(modifier = Modifier.height(50.dp)) // Espacio de 50.dp
+            ElevatedButton(onClick = { /*TODO*/ }) {
+                Text(text = "Elevated Button")
+            }
         }
+        Row {
+            Spacer(modifier = Modifier.height(50.dp))
+            TextButton(onClick = { /*TODO*/ }) {
+                Text(text = "Text Button")
+            }
+            Spacer(modifier = Modifier.height(50.dp))
+            //TextField(value = , onValueChange = )
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Boton normal")
+            }
+
+
+
+
+        }
+
+
+
     }
+
 }
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UsuarioLoVe(miViewModel: MyViewModel) {
-    @Composable
-    fun InterfazUsuario(miViewModel: MyViewModel, name: String, modifier: Modifier = Modifier) {
+fun Textos(MyViewModel: MyViewModel){
+    Row {
+        Text(
+            fontSize = 40.sp,
+            text =MyViewModel.getRandom().toString()
 
+        )
 
         Column {
-            // están separado por filas
-            nombreFile( nombre = name, modifier = modifier)
+            OutlinedTextField(
+                value = MyViewModel.getNombre(),
+                onValueChange ={MyViewModel.nombre.value = it} )
 
-            fButton(miViewModel = miViewModel)
+            Spacer(modifier = Modifier.height(25.dp))
+            Text(text = "Result:  "+ MyViewModel.getNombre())
 
-            etiquetaRellenarPalabras(miViewModel = miViewModel)
+            Text(
+
+                text =MyViewModel.getLista().toString(),
+                fontSize = 20.sp
+
+
+            )
+
         }
     }
 
-    @Composable
-    fun GreetingPreview() {
-        ApliTheme {
-            InterfazUsuario(miViewModel = MyViewModel(), "prueba")
-        }
+}
+
+
+
+
+
+@Composable
+fun Greeting(MyViewModel:MyViewModel) {
+    Column {
+        buttons(MyViewModel = MyViewModel )
+        Spacer(modifier = Modifier.height(50.dp))
+        Textos(MyViewModel = MyViewModel)
     }
 
-    @Composable
-    fun textoQueSeMuestra(texto: String) {
-        //texto descriptivo
-        Text(text = texto)
+
+
+
+
+}
+
+@PreviewParameter(showBackground = true)
+@Composable
+fun GreetingPreview(MyViewModel: MyViewModel) {
+    ApliTheme {
+        Greeting(MyViewModel = MyViewModel)
     }
 }

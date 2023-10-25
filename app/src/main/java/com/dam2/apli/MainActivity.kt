@@ -35,41 +35,45 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Saludo("Hola")
+                    Greeting(MyViewModel = MyViewModel)
                 }
             }
         }
     }
-    @Composable
-    private fun InterfazUsuario(){
-        login()
-        texto_descriptivo("fun")
-        chat()
-    }
-    @Composable
-    fun login(){
-        //texto y boton para logear
-        texto_descriptivo(texto="Fallo de login")
-    }
-    @Composable
-    fun texto_descriptivo(texto: String){
-        Text(text=texto)
-    }
-    fun chat(){
-        TODO("Not yet implemented")
-    }
-}
+    //funciones On que deben ir dentro de la main activity
+    val TAG: String = "Estado"
+    var tiempoInicio: Long = 0
+    var tiempoFin : Long = 0
 
-@Composable
-fun Saludo(name: String, modifier: Modifier = Modifier) {
-    var _numbers = remember { mutableStateOf(0) }
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG,"Funcion on start")
+        tiempoInicio = System.currentTimeMillis()
+    }
 
-}
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG,"Funcion on Pause")
+        tiempoFin = System.currentTimeMillis()
+        tiempoFin -= tiempoInicio
+        tiempoFin = tiempoFin /1000
+        Log.d(TAG,"Tiempo transcurrido es de: " + tiempoFin + " s")
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ApliTheme {
-        Saludo("Android")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG,"Funcion on resume")
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG,"Funcion on STOP")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG,"Funcion on Destroy")
     }
 }
